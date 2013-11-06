@@ -1,6 +1,6 @@
-# Delighted API library for Ruby
+# Delighted API client for Ruby
 
-Official Ruby library for the [Delighted API](https://delightedapp.com).
+Official Ruby client for the [Delighted API](https://delightedapp.com).
 
 For installation and usage instructions, please [sign in to your Delighted account](https://delightedapp.com/signin) and follow the API documentation under Settings.
 
