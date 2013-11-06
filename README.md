@@ -1,4 +1,5 @@
-# Delighted API client for Ruby
+# Delighted API client for Ruby&nbsp;[![Build Status](https://travis-ci.org/delighted/[delighted-ruby.png)](https://travis-ci.org/delighted/delighted-ruby)
+
 
 Official Ruby client for the [Delighted API](https://delightedapp.com).
 
