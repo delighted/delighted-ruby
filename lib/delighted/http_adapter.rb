@@ -1,8 +1,8 @@
 module Delighted
   class HTTPAdapter
     REQUEST_CLASSES = {
-      get: Net::HTTP::Get,
-      post: Net::HTTP::Post,
+      :get => Net::HTTP::Get,
+      :post => Net::HTTP::Post,
     }
 
     def request(method, uri, headers = {}, data = nil)
