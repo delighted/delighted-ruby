@@ -25,6 +25,7 @@ module Delighted
       module Singleton
         module ClassMethods
           def retrieve(opts = {}, client = Delighted.shared_client)
+            opts = Utils.serialize_values(opts)
             json = client.get_json(path, opts)
             new(json)
           end

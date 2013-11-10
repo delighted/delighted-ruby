@@ -38,6 +38,22 @@ module Delighted
         object
       end
     end
+
+    def self.serialize_values(object)
+      case object
+      when Time, Date
+        object.to_i
+      when Hash
+        object.inject({}) { |memo,(k,v)|
+          memo[k] = serialize_values(v)
+          memo
+        }
+      when Array
+        object.map { |v| serialize_values(v) }
+      else
+        object
+      end
+    end
   end
 end
 

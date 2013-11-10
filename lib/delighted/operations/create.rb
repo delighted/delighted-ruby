@@ -8,6 +8,7 @@ module Delighted
       module ClassMethods
         def create(attributes = {}, client = Delighted.shared_client)
           params = Utils.hash_removing_key(attributes, :id)
+          params = Utils.serialize_values(params)
           json = client.post_json(path, params)
           new(json)
         end

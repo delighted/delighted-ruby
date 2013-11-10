@@ -7,6 +7,7 @@ module Delighted
 
       module ClassMethods
         def all(opts = {}, client = Delighted.shared_client)
+          opts = Utils.serialize_values(opts)
           json = client.get_json(path, opts)
           EnumerableResourceCollection.new(json.map { |attributes| new(attributes) })
         end
