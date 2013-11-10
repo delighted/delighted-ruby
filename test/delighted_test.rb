@@ -14,8 +14,7 @@ class Delighted::MetricsTest < Delighted::TestCase
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :nps => 10 }))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
-    client = Delighted::Client.new(:api_key => '123abc', :http_adapter => mock_http_adapter)
-    metrics = client.metrics.retrieve
+    metrics = Delighted::Metrics.retrieve
     assert_kind_of Delighted::Metrics, metrics
     assert_equal({ :nps => 10 }, metrics.to_hash)
     assert_equal 10, metrics.nps
@@ -31,8 +30,7 @@ class Delighted::PeopleTest < Delighted::TestCase
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :id => '123', :email => 'foo@bar.com' }))
     mock_http_adapter.expects(:request).with(:post, uri, headers, data).once.returns(response)
 
-    client = Delighted::Client.new(:api_key => '123abc', :http_adapter => mock_http_adapter)
-    person = client.people.create(:email => 'foo@bar.com')
+    person = Delighted::Person.create(:email => 'foo@bar.com')
     assert_kind_of Delighted::Person, person
     assert_equal({ :email => 'foo@bar.com' }, person.to_hash)
     assert_equal 'foo@bar.com', person.email
@@ -48,8 +46,7 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :id => '456', :person => '123', :score => 10 }))
     mock_http_adapter.expects(:request).with(:post, uri, headers, data).once.returns(response)
 
-    client = Delighted::Client.new(:api_key => '123abc', :http_adapter => mock_http_adapter)
-    survey_response = client.survey_responses.create(:person => '123', :score => 10)
+    survey_response = Delighted::SurveyResponse.create(:person => '123', :score => 10)
     assert_kind_of Delighted::SurveyResponse, survey_response
     assert_equal({ :person => '123', :score => 10 }, survey_response.to_hash)
     assert_equal '123', survey_response.person
@@ -63,8 +60,7 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([{ :id => '123', :comment => 'One' }, { :id => '456', :comment => 'Two' }]))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
-    client = Delighted::Client.new(:api_key => '123abc', :http_adapter => mock_http_adapter)
-    survey_responses = client.survey_responses.all
+    survey_responses = Delighted::SurveyResponse.all
     assert_kind_of Delighted::EnumerableResourceCollection, survey_responses
     assert_kind_of Delighted::SurveyResponse, survey_responses[0]
     assert_equal({ :comment => 'One' }, survey_responses[0].to_hash)

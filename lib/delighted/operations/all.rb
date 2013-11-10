@@ -2,19 +2,14 @@ module Delighted
   module Operations
     module All
       def self.included(klass)
-        klass.extend(AuxiliaryClassMethods)
-        Operations.add_operations(klass, OperationClassMethods)
+        klass.extend(ClassMethods)
       end
 
-      module OperationClassMethods
-        def all(client, opts = {})
+      module ClassMethods
+        def all(opts = {}, client = Delighted.shared_client)
           json = client.get_json(path, opts)
           EnumerableResourceCollection.new(json.map { |attributes| new(attributes) })
         end
-      end
-
-      module AuxiliaryClassMethods
-        # pagination, enumerable stuff etc.
       end
     end
   end

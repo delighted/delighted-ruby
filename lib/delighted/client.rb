@@ -4,17 +4,9 @@ module Delighted
     DEFAULT_HTTP_ADAPTER = HTTPAdapter.new
 
     def initialize(opts = {})
-      @api_key = opts[:api_key] or raise ArgumentError, "You must pass an :api_key."
+      @api_key = opts[:api_key] or raise ArgumentError, "You must provide an API key by setting Delighted.api_key = '123abc' or passing { :api_key => '123abc' } when instantiating Delighted::Client.new"
       @api_base_url = opts[:api_base_url] || DEFAULT_API_BASE_URL
       @http_adapter = opts[:http_adapter] || DEFAULT_HTTP_ADAPTER
-    end
-
-    Resource.resources.each do |resource|
-      class_eval <<-END, __FILE__, __LINE__
-        def #{resource.interface_name}
-          @#{resource.interface_name} ||= ResourceInterface.new(self, #{resource.name})
-        end
-      END
     end
 
     def get_json(path, params = {})

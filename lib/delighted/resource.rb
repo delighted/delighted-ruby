@@ -1,14 +1,6 @@
 module Delighted
   class Resource
     class << self
-      def interface_name=(interface_name)
-        @interface_name = interface_name
-      end
-
-      def interface_name
-        @interface_name
-      end
-
       def path=(path)
         @path = path
       end
@@ -23,18 +15,6 @@ module Delighted
 
       def singleton_resource?
         !!@singleton_resource
-      end
-
-      def operations
-        @operations ||= Set.new
-      end
-
-      def resources
-        @resources ||= Set.new
-      end
-
-      def inherited(klass)
-        resources << klass
       end
     end
 
