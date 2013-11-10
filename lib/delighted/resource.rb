@@ -25,7 +25,7 @@ module Delighted
     def initialize(attributes = {})
       @id = attributes[:id]
       define_id_reader if @id
-      @attributes = Utils.hash_removing_key(attributes, :id)
+      @attributes = Utils.hash_without_key(attributes, :id)
       define_attribute_accessors(@attributes.keys)
     end
 

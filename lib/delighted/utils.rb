@@ -4,7 +4,7 @@ module Delighted
       class << object; self; end
     end
 
-    def self.hash_removing_key(hash, key)
+    def self.hash_without_key(hash, key)
       hash.reject { |k,v| k == key }.inject({}) { |memo,(k,v)| memo[k] = v; memo }
     end
 
