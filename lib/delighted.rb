@@ -32,7 +32,7 @@ module Delighted
 
     def shared_client
       @mutex.synchronize do
-        @shared_client ||= Client.new(api_key: api_key, api_base_url: api_base_url, http_adapter: http_adapter)
+        @shared_client ||= Client.new(:api_key => api_key, :api_base_url => api_base_url, :http_adapter => http_adapter)
       end
     end
   end
