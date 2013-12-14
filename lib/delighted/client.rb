@@ -51,7 +51,7 @@ module Delighted
     def default_headers
       @default_headers ||= {
         'Authorization' => "Basic #{["#{@api_key}:"].pack('m0')}",
-        'User-Agent' => "Delighted RubyGem #{VERSION}"
+        'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}"
       }.freeze
     end
   end

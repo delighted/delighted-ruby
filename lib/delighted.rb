@@ -5,6 +5,7 @@ require 'multi_json'
 require 'set'
 require 'thread'
 
+require 'delighted/version'
 require 'delighted/utils'
 require 'delighted/json'
 
