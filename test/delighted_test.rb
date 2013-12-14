@@ -10,7 +10,7 @@ end
 class Delighted::MetricsTest < Delighted::TestCase
   def test_retrieving_metrics
     uri = URI.parse("https://api.delightedapp.com/v1/metrics")
-    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json" }
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :nps => 10 }))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
@@ -25,7 +25,7 @@ end
 class Delighted::PeopleTest < Delighted::TestCase
   def test_creating_or_updating_a_person
     uri = URI.parse("https://api.delightedapp.com/v1/people")
-    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'Content-Type' => 'application/json' }
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     data = Delighted::JSON.dump({ :email => 'foo@bar.com' })
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :id => '123', :email => 'foo@bar.com' }))
     mock_http_adapter.expects(:request).with(:post, uri, headers, data).once.returns(response)
@@ -41,7 +41,7 @@ end
 class Delighted::SurveyResponseTest < Delighted::TestCase
   def test_creating_a_survey_response
     uri = URI.parse("https://api.delightedapp.com/v1/survey_responses")
-    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'Content-Type' => 'application/json' }
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     data = Delighted::JSON.dump({ :person => '123', :score => 10 })
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :id => '456', :person => '123', :score => 10 }))
     mock_http_adapter.expects(:request).with(:post, uri, headers, data).once.returns(response)
@@ -56,7 +56,7 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
 
   def test_listing_all_survey_responses
     uri = URI.parse("https://api.delightedapp.com/v1/survey_responses")
-    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json" }
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([{ :id => '123', :comment => 'One' }, { :id => '456', :comment => 'Two' }]))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
