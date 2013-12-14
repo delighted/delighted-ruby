@@ -10,7 +10,7 @@ For more detailed examples, please see [USAGE.md](https://github.com/delighted/d
 
 - Ruby MRI (1.8.7+)
 - JRuby (1.8 + 1.9 modes)
-- RBX (1.8 + 1.9 modes)
+- RBX (2.1.1)
 - REE (1.8.7-2012.02)
 
 ## Contributing
