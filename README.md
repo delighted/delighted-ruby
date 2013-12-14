@@ -4,7 +4,7 @@ Official Ruby client for the [Delighted](https://delightedapp.com) API.
 
 For basic installation and usage instructions, please [sign in to your Delighted account](https://delightedapp.com/signin) and follow the API documentation under Settings.
 
-For more detailed examples, please see [USAGE.md](https://github.com/delighted/delighted/blob/master/USAGE.md).
+For more detailed examples, please see [USAGE.md](https://github.com/delighted/delighted-ruby/blob/master/USAGE.md).
 
 ## Supported Rubies
 
