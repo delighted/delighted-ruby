@@ -93,7 +93,7 @@ client = Delighted::Client.new(:api_key => 'API_KEY',
 metrics_from_custom_client = Delighted::Metrics.retrieve({}, client)
 
 # Or, you can set Delighted.shared_client yourself
-Delighed.shared_client = Delighted::Client.new(:api_key => 'API_KEY',
+Delighted.shared_client = Delighted::Client.new(:api_key => 'API_KEY',
   :api_base_url => 'https://api.delightedapp.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
 metrics_from_custom_shared_client = Delighted::Metrics.retrieve
 ```
