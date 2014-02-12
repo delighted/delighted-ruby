@@ -17,7 +17,7 @@ require 'delighted/operations/retrieve'
 
 require 'delighted/resources/metrics'
 require 'delighted/resources/person'
-require 'delighted/resources/survey_responses'
+require 'delighted/resources/survey_response'
 
 require 'delighted/errors'
 require 'delighted/http_response'
