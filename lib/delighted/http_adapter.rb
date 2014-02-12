@@ -3,6 +3,7 @@ module Delighted
     REQUEST_CLASSES = {
       :get => Net::HTTP::Get,
       :post => Net::HTTP::Post,
+      :delete => Net::HTTP::Delete
     }
 
     def request(method, uri, headers = {}, data = nil)

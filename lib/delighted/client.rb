@@ -29,6 +29,16 @@ module Delighted
       handle_json_response(response)
     end
 
+    def delete_json(path, params = {})
+      headers = default_headers.dup.merge('Accept' => 'application/json', 'Content-Type' => 'application/json')
+
+      uri = URI.parse(File.join(@api_base_url, path))
+      data = JSON.dump(params) unless params.empty?
+
+      response = @http_adapter.request(:delete, uri, headers, data)
+      handle_json_response(response)
+    end
+
     private
 
     def handle_json_response(response)
