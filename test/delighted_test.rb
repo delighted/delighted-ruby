@@ -36,6 +36,17 @@ class Delighted::PeopleTest < Delighted::TestCase
     assert_equal 'foo@bar.com', person.email
     assert_equal '123', person.id
   end
+
+  def test_deleting_pending_survey_requests_for_a_person
+    uri = URI.parse("https://api.delightedapp.com/v1/people/foo%40bar.com/survey_requests/pending")
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :ok => true }))
+    mock_http_adapter.expects(:request).with(:delete, uri, headers, nil).once.returns(response)
+
+    result = Delighted::SurveyRequest.delete_pending(:person_email => "foo@bar.com")
+    assert_kind_of Hash, result
+    assert_equal({ :ok => true }, result)
+  end
 end
 
 class Delighted::SurveyResponseTest < Delighted::TestCase
