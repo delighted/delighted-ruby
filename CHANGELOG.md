@@ -1,3 +1,9 @@
+## 1.2.0 (Unreleased)
+
+Features:
+
+- Add test and usage details for specifying sort when listing SurveyResponses
+
 ## 1.1.0 (2014-01-12)
 
 Features:
