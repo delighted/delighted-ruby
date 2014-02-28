@@ -66,12 +66,12 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
   end
 
   def test_listing_all_survey_responses
-    uri = URI.parse("https://api.delightedapp.com/v1/survey_responses")
+    uri = URI.parse("https://api.delightedapp.com/v1/survey_responses?order=desc")
     headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([{ :id => '123', :comment => 'One' }, { :id => '456', :comment => 'Two' }]))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
-    survey_responses = Delighted::SurveyResponse.all
+    survey_responses = Delighted::SurveyResponse.all(:order => 'desc')
     assert_kind_of Delighted::EnumerableResourceCollection, survey_responses
     assert_kind_of Delighted::SurveyResponse, survey_responses[0]
     assert_equal({ :comment => 'One' }, survey_responses[0].to_hash)

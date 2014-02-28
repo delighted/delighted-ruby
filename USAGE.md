@@ -65,6 +65,10 @@ survey_response2 = Delighted::SurveyResponse.create(:person => person1.id, :scor
 survey_responses_page_1 = Delighted::SurveyResponse.all
 survey_responses_page_2 = Delighted::SurveyResponse.all(:page => 2)
 
+# List all survey responses, 20 per page, in reverse chronological order (newest first)
+survey_responses_page_1_desc = Delighted::SurveyResponse.all(:order => 'desc')
+survey_responses_page_2_desc = Delighted::SurveyResponse.all(:order => 'desc', :page => 2)
+
 # List all survey responses, 100 per page, page 5, with a time range
 filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5, :per_page => 100,
   :since => Time.utc(2013, 10, 01), :until => Time.utc(2013, 11, 01))
