@@ -65,6 +65,10 @@ survey_response2 = Delighted::SurveyResponse.create(:person => person1.id, :scor
 survey_responses_page_1 = Delighted::SurveyResponse.all
 survey_responses_page_2 = Delighted::SurveyResponse.all(:page => 2)
 
+# List all survey responses, 20 per page, for a specific trend (ID: 123)
+survey_responses_page_1 = Delighted::SurveyResponse.all(:trend => "123")
+survey_responses_page_2 = Delighted::SurveyResponse.all(:trend => "123", :page => 2)
+
 # List all survey responses, 20 per page, in reverse chronological order (newest first)
 survey_responses_page_1_desc = Delighted::SurveyResponse.all(:order => 'desc')
 survey_responses_page_2_desc = Delighted::SurveyResponse.all(:order => 'desc', :page => 2)
@@ -79,6 +83,9 @@ filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5, :per_page 
 ```ruby
 # Get current metrics, 30-day simple moving average, from most recent response
 metrics = Delighted::Metrics.retrieve
+
+# Get current metrics, 30-day simple moving average, from most recent response, for a specific trend (ID: 123)
+metrics = Delighted::Metrics.retrieve(:trend => "123")
 
 # Get metrics, for given range
 metrics = Delighted::Metrics.retrieve(:since => Time.utc(2013, 10, 01),
