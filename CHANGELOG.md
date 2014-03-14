@@ -1,4 +1,4 @@
-## 1.3.0 (Unreleased)
+## 1.3.0.rc1 (2014-03-14)
 
 Features:
 
