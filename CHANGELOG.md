@@ -1,3 +1,9 @@
+## 1.3.0 (Unreleased)
+
+Features:
+
+- Add support expanding person on SurveyResponses
+
 ## 1.2.0 (2014-02-28)
 
 Features:
