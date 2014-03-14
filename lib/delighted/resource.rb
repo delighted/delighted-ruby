@@ -25,14 +25,20 @@ module Delighted
     def initialize(attributes = {})
       @id = attributes[:id]
       define_id_reader if @id
-      @attributes = Utils.hash_without_key(attributes, :id)
-      define_attribute_accessors(@attributes.keys)
+      build_from_attributes(attributes)
     end
 
     def to_hash
       attributes
     end
     alias_method :to_h, :to_hash
+
+    protected
+
+    def build_from_attributes(attributes)
+      @attributes = Utils.hash_without_key(attributes, :id)
+      define_attribute_accessors(@attributes.keys)
+    end
 
     private
 

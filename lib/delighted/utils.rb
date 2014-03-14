@@ -12,7 +12,7 @@ module Delighted
       hash_or_array.map { |object|
         k, v = case hash_or_array
         when Hash then object
-        when Array then [nil, object[0]]
+        when Array then [nil, object]
         else raise ArgumentError, "must pass Hash or Array"
         end
 
