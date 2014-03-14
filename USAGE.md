@@ -61,17 +61,20 @@ survey_response2 = Delighted::SurveyResponse.create(:person => person1.id, :scor
 ### Listing survey responses
 
 ```ruby
-# List all survey responses, 20 per page
+# List all survey responses, 20 per page, first 2 pages
 survey_responses_page_1 = Delighted::SurveyResponse.all
 survey_responses_page_2 = Delighted::SurveyResponse.all(:page => 2)
 
+```ruby
+# List all survey responses, 20 per page, expanding person object
+survey_responses_page_1_expanded = Delighted::SurveyResponse.all(:expand => ['person'])
+survey_responses_page_1_expanded[0].person #=> #<Delighted::Person:...>
+
 # List all survey responses, 20 per page, for a specific trend (ID: 123)
-survey_responses_page_1 = Delighted::SurveyResponse.all(:trend => "123")
-survey_responses_page_2 = Delighted::SurveyResponse.all(:trend => "123", :page => 2)
+survey_responses_page_1_trend = Delighted::SurveyResponse.all(:trend => "123")
 
 # List all survey responses, 20 per page, in reverse chronological order (newest first)
 survey_responses_page_1_desc = Delighted::SurveyResponse.all(:order => 'desc')
-survey_responses_page_2_desc = Delighted::SurveyResponse.all(:order => 'desc', :page => 2)
 
 # List all survey responses, 100 per page, page 5, with a time range
 filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5, :per_page => 100,

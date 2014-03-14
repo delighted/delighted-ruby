@@ -82,4 +82,26 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
     assert_equal 'Two', survey_responses[1].comment
     assert_equal '456', survey_responses[1].id
   end
+
+  def test_listing_all_survey_responses_expand_person
+    uri = URI.parse("https://api.delightedapp.com/v1/survey_responses?expand%5B%5D=person")
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([{ :id => '123', :comment => 'One', :person => { :id => '123', :email => 'foo@bar.com' } }, { :id => '456', :comment => 'Two', :person => { :id => '123', :email => 'foo@bar.com' } }]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    survey_responses = Delighted::SurveyResponse.all(:expand => ['person'])
+    assert_kind_of Delighted::EnumerableResourceCollection, survey_responses
+    assert_kind_of Delighted::SurveyResponse, survey_responses[0]
+    assert_equal({ :comment => 'One' }, survey_responses[0].to_hash)
+    assert_equal 'One', survey_responses[0].comment
+    assert_equal '123', survey_responses[0].id
+    assert_kind_of Delighted::Person, survey_responses[0].person
+    assert_equal({ :email => 'foo@bar.com' }, survey_responses[0].person.to_hash)
+    assert_kind_of Delighted::SurveyResponse, survey_responses[1]
+    assert_equal({ :comment => 'Two' }, survey_responses[1].to_hash)
+    assert_equal 'Two', survey_responses[1].comment
+    assert_equal '456', survey_responses[1].id
+    assert_kind_of Delighted::Person, survey_responses[1].person
+    assert_equal({ :email => 'foo@bar.com' }, survey_responses[1].person.to_hash)
+  end
 end
