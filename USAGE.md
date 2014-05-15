@@ -40,6 +40,13 @@ updated_person1 = Delighted::Person.create(:email => "foo+testing1@delightedapp.
   :name => "James Scott", :send => false)
 ```
 
+### Unsubscribing people
+
+```ruby
+# Unsubscribe an existing person
+Delighted::Unsubscribe.create(:person_email => "foo+testing1@delightedapp.com")
+```
+
 ### Deleting pending survey requests
 
 ```ruby
