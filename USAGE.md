@@ -44,7 +44,7 @@ updated_person1 = Delighted::Person.create(:email => "foo+testing1@delightedapp.
 
 ```ruby
 # Delete all pending (scheduled but unsent) survey requests for a person, by email.
-Delighted::SurveyRequest.delete_pending(:email => "foo+testing1@delightedapp.com")
+Delighted::SurveyRequest.delete_pending(:person_email => "foo+testing1@delightedapp.com")
 ```
 
 ### Adding survey responses
