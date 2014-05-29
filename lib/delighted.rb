@@ -19,6 +19,7 @@ require 'delighted/resources/metrics'
 require 'delighted/resources/person'
 require 'delighted/resources/survey_request'
 require 'delighted/resources/survey_response'
+require 'delighted/resources/unsubscribe'
 
 require 'delighted/errors'
 require 'delighted/http_response'

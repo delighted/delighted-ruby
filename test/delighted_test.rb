@@ -37,6 +37,24 @@ class Delighted::PeopleTest < Delighted::TestCase
     assert_equal '123', person.id
   end
 
+  def test_unsubscribing_a_person
+    person_email = 'person@example.com'
+    uri = URI.parse('https://api.delightedapp.com/v1/unsubscribes')
+    headers = {
+      'Authorization' => "Basic #{["123abc:"].pack('m0')}",
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/json',
+      'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}"
+    }
+    data = Delighted::JSON.dump(:person_email => person_email)
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :ok => true }))
+    mock_http_adapter.expects(:request).
+      with(:post, uri, headers, data).once.
+      returns(response)
+
+    survey_response = Delighted::Unsubscribe.create(:person_email => person_email)
+  end
+
   def test_deleting_pending_survey_requests_for_a_person
     uri = URI.parse("https://api.delightedapp.com/v1/people/foo%40bar.com/survey_requests/pending")
     headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
