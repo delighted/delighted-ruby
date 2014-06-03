@@ -1,8 +1,9 @@
-## 1.3.0.rc1 (2014-03-14)
+## 1.3.0.rc2 (2014-06-03)
 
 Features:
 
 - Add support expanding person on SurveyResponses
+- Add support for new Unsubscribes endpoint
 
 ## 1.2.0 (2014-02-28)
 
