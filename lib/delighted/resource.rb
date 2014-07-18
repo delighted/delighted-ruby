@@ -54,6 +54,10 @@ module Delighted
           define_method(key) do
             attributes[key]
           end
+
+          define_method("#{key}=") do |value|
+            attributes[key] = value
+          end
         end
       end
     end

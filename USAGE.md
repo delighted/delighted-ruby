@@ -65,6 +65,30 @@ survey_response2 = Delighted::SurveyResponse.create(:person => person1.id, :scor
   :comment => "Really nice.")
 ```
 
+### Retrieving a survey response
+
+```ruby
+# Retrieve an existing survey response
+survey_response3 = Delighted::SurveyResponse.retrieve('123')
+```
+
+### Updating survey responses
+
+```ruby
+# Update a survey response score
+survey_response4 = Delighted::SurveyResponse.retrieve('234')
+survey_response4.score = 10
+survey_response4.save #=> #<Delighted::SurveyResponse:...>
+
+# Update (or add) survey response properties
+survey_response4.person_properties = { :segment => "Online" }
+survey_response4.save #=> #<Delighted::SurveyResponse:...>
+
+# Update person who recorded the survey response
+survey_response4.person = '321'
+survey_response4.save #=> #<Delighted::SurveyResponse:...>
+```
+
 ### Listing survey responses
 
 ```ruby
