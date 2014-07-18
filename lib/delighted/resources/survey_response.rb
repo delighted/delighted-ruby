@@ -4,6 +4,8 @@ module Delighted
 
     include Operations::Create
     include Operations::All
+    include Operations::Update
+    include Operations::Retrieve
 
     def to_hash
       if Person === attributes[:person]

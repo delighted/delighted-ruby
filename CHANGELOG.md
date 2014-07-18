@@ -1,3 +1,10 @@
+## 1.4.0 (Unreleased)
+
+Features:
+
+- Add support for retrieving a SurveyResponse
+- Add support for updating a SurveyResponse
+
 ## 1.3.0 (2014-06-03)
 
 Features:

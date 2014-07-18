@@ -14,6 +14,7 @@ require 'delighted/resource'
 require 'delighted/operations/all'
 require 'delighted/operations/create'
 require 'delighted/operations/retrieve'
+require 'delighted/operations/update'
 
 require 'delighted/resources/metrics'
 require 'delighted/resources/person'
