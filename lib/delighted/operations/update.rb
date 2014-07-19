@@ -8,7 +8,8 @@ module Delighted
       end
 
       def save(client = Delighted.shared_client)
-        params = Utils.hash_without_key(attributes, :id)
+        params = Utils.hash_without_key(to_hash, :id)
+        params = params.merge(:expand => expanded_attribute_names) unless expanded_attribute_names.empty?
         params = Utils.serialize_values(params)
         json = client.put_json(self.class.path(id), params)
         self.class.new(json)

@@ -105,7 +105,7 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
 
     survey_response = Delighted::SurveyResponse.retrieve('456', :expand => ['person'])
     assert_kind_of Delighted::SurveyResponse, survey_response
-    assert_equal({ :score => 10 }, survey_response.to_hash)
+    assert_equal({ :person => '123', :score => 10 }, survey_response.to_hash)
     assert_kind_of Delighted::Person, survey_response.person
     assert_equal '123', survey_response.person.id
     assert_equal({ :email => 'foo@bar.com' }, survey_response.person.to_hash)
@@ -157,13 +157,13 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
     survey_responses = Delighted::SurveyResponse.all(:expand => ['person'])
     assert_kind_of Delighted::EnumerableResourceCollection, survey_responses
     assert_kind_of Delighted::SurveyResponse, survey_responses[0]
-    assert_equal({ :comment => 'One' }, survey_responses[0].to_hash)
+    assert_equal({ :person => '123', :comment => 'One' }, survey_responses[0].to_hash)
     assert_equal 'One', survey_responses[0].comment
     assert_equal '123', survey_responses[0].id
     assert_kind_of Delighted::Person, survey_responses[0].person
     assert_equal({ :email => 'foo@bar.com' }, survey_responses[0].person.to_hash)
     assert_kind_of Delighted::SurveyResponse, survey_responses[1]
-    assert_equal({ :comment => 'Two' }, survey_responses[1].to_hash)
+    assert_equal({ :person => '123', :comment => 'Two' }, survey_responses[1].to_hash)
     assert_equal 'Two', survey_responses[1].comment
     assert_equal '456', survey_responses[1].id
     assert_kind_of Delighted::Person, survey_responses[1].person

@@ -1,16 +1,11 @@
 module Delighted
   class Resource
     class << self
-      def path=(path)
-        @path = path
-      end
+      attr_accessor :path
+      attr_writer :singleton_resource, :expandable_attributes
 
-      def path
-        @path
-      end
-
-      def singleton_resource=(singleton_resource)
-        @singleton_resource = singleton_resource
+      def expandable_attributes
+        @expandable_attributes ||= {}
       end
 
       def singleton_resource?
@@ -28,19 +23,45 @@ module Delighted
       build_from_attributes(attributes)
     end
 
+    # Attributes used for serialization
     def to_hash
-      attributes
+      serialized_attributes = attributes.dup
+
+      self.class.expandable_attributes.each_pair.select do |attribute_name, expanded_class|
+        if expanded_class === attributes[attribute_name]
+          serialized_attributes[attribute_name] = serialized_attributes[attribute_name].id
+        end
+      end
+
+      serialized_attributes
     end
     alias_method :to_h, :to_hash
 
-    protected
+    private
+
+    def expanded_attribute_names
+      names = Set.new
+
+      self.class.expandable_attributes.each_pair.select do |attribute_name, expanded_class|
+        if expanded_class === attributes[attribute_name]
+          names << attribute_name
+        end
+      end
+
+      names
+    end
 
     def build_from_attributes(attributes)
       @attributes = Utils.hash_without_key(attributes, :id)
+
+      self.class.expandable_attributes.each_pair do |attribute_name, expanded_class|
+        if Hash === @attributes[attribute_name]
+          @attributes[attribute_name] = expanded_class.new(@attributes.delete(attribute_name))
+        end
+      end
+
       define_attribute_accessors(@attributes.keys)
     end
-
-    private
 
     def define_id_reader
       Utils.eigenclass(self).instance_eval do

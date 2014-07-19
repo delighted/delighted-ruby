@@ -48,7 +48,7 @@ module Delighted
           memo[k] = serialize_values(v)
           memo
         }
-      when Array
+      when Array, Set
         object.map { |v| serialize_values(v) }
       else
         object
