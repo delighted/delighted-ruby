@@ -96,7 +96,6 @@ survey_response4.save #=> #<Delighted::SurveyResponse:...>
 survey_responses_page_1 = Delighted::SurveyResponse.all
 survey_responses_page_2 = Delighted::SurveyResponse.all(:page => 2)
 
-```ruby
 # List all survey responses, 20 per page, expanding person object
 survey_responses_page_1_expanded = Delighted::SurveyResponse.all(:expand => ['person'])
 survey_responses_page_1_expanded[0].person #=> #<Delighted::Person:...>
