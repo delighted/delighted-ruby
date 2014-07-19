@@ -11,8 +11,9 @@ module Delighted
 
       module Pluralton
         module ClassMethods
-          def retrieve(id, client = Delighted.shared_client)
-            json = client.get_json(path(id))
+          def retrieve(id, opts = {}, client = Delighted.shared_client)
+            opts = Utils.serialize_values(opts)
+            json = client.get_json(path(id), opts)
             new(json)
           end
 
