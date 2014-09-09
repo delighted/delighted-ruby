@@ -3,6 +3,12 @@ module Delighted
     DEFAULT_API_BASE_URL = "https://api.delightedapp.com/v1"
     DEFAULT_HTTP_ADAPTER = HTTPAdapter.new
 
+    #
+    # This is just here for testing really, but it lets us have
+    # access to the adapter instance
+    #
+    attr_reader :http_adapter
+
     def initialize(opts = {})
       @api_key = opts[:api_key] or raise ArgumentError, "You must provide an API key by setting Delighted.api_key = '123abc' or passing { :api_key => '123abc' } when instantiating Delighted::Client.new"
       @api_base_url = opts[:api_base_url] || DEFAULT_API_BASE_URL

@@ -7,7 +7,17 @@ class Delighted::TestCase < Minitest::Test
 
   def setup
     super
-    Delighted.shared_client = Delighted::Client.new(:api_key => '123abc', :http_adapter => mock_http_adapter)
+    Delighted.api_key = '123abc'
+    Delighted.http_adapter = mock_http_adapter
+  end
+
+  def teardown
+    #
+    # Clear our our shared client and all settings
+    #
+    Delighted.shared_client = nil
+    Delighted.api_key = nil
+    Delighted.http_adapter = nil
   end
 
   def mock_http_adapter
