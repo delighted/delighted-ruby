@@ -54,7 +54,7 @@ Unsubscribing people:
 Delighted::Unsubscribe.create(:person_email => "foo+test1@delighted.com")
 ```
 
-### Deleting pending survey requests
+Deleting pending survey requests
 
 ```ruby
 # Delete all pending (scheduled but unsent) survey requests for a person, by email.
