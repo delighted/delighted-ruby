@@ -150,12 +150,14 @@ By default, a shared instance of `Delighted::Client` is created lazily in `Delig
 ```ruby
 # Create an custom client instance, and pass as last argument to resource actions
 client = Delighted::Client.new(:api_key => 'API_KEY',
-  :api_base_url => 'https://api.delighted.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
+  :api_base_url => 'https://api.delighted.com/v1',
+  :http_adapter => Delighted::HTTPAdapter.new)
 metrics_from_custom_client = Delighted::Metrics.retrieve({}, client)
 
 # Or, you can set Delighted.shared_client yourself
 Delighted.shared_client = Delighted::Client.new(:api_key => 'API_KEY',
-  :api_base_url => 'https://api.delighted.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
+  :api_base_url => 'https://api.delighted.com/v1',
+  :http_adapter => Delighted::HTTPAdapter.new)
 metrics_from_custom_shared_client = Delighted::Metrics.retrieve
 ```
 
