@@ -135,7 +135,7 @@ metrics = Delighted::Metrics.retrieve(:since => Time.utc(2013, 10, 01),
   :until => Time.utc(2013, 11, 01))
 ```
 
-## <a name="advanced-configuration"></a> Advanced configuration & test
+## <a name="advanced-configuration"></a> Advanced configuration & testing
 
 The following options are configurable for the client:
 
