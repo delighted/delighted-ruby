@@ -1,6 +1,6 @@
 # Delighted API Ruby Client [![Build Status](https://travis-ci.org/delighted/delighted-ruby.png)](https://travis-ci.org/delighted/delighted-ruby)
 
-Official Ruby client for the [Delighted](https://delighted.com/docs/api) API.
+Official Ruby client for the [Delighted API](https://delighted.com/docs/api).
 
 ## Installation
 
@@ -25,22 +25,25 @@ Adding/updating people and scheduling surveys:
 
 ```ruby
 # Add a new person, and schedule a survey immediately
-person1 = Delighted::Person.create(:email => "foo+testing1@delightedapp.com")
+person1 = Delighted::Person.create(:email => "foo+testing1@delighted.com")
 
 # Add a new person, and schedule a survey after 1 minute (60 seconds)
-person2 = Delighted::Person.create(:email => "foo+testing2@delightedapp.com", :delay => 60)
+person2 = Delighted::Person.create(:email => "foo+testing2@delighted.com",
+  :delay => 60)
 
 # Add a new person, but do not schedule a survey
-person3 = Delighted::Person.create(:email => "foo+testing3@delightedapp.com", :send => false)
+person3 = Delighted::Person.create(:email => "foo+testing3@delighted.com",
+  :send => false)
 
-# Add a new person with full set of attributes, including a custom question product name,
-# and schedule a survey with a 30 second delay
-person4 = Delighted::Person.create(:email => "foo+testing4@delightedapp.com", :name => "Joe Bloggs",
-  :properties => { :customer_id => 123, :country => "USA", :question_product_name => "Apple Genius Bar" },
-  :delay => 30)
+# Add a new person with full set of attributes, including a custom question
+# product name, and schedule a survey with a 30 second delay
+person4 = Delighted::Person.create(:email => "foo+testing4@delighted.com",
+  :name => "Joe Bloggs", :properties => { :customer_id => 123, :country => "USA",
+  :question_product_name => "Apple Genius Bar" }, :delay => 30)
 
-# Update an existing person (identified by email), adding a name, without scheduling a survey
-updated_person1 = Delighted::Person.create(:email => "foo+testing1@delightedapp.com",
+# Update an existing person (identified by email), adding a name, without
+# scheduling a survey
+updated_person1 = Delighted::Person.create(:email => "foo+testing1@delighted.com",
   :name => "James Scott", :send => false)
 ```
 
@@ -48,25 +51,26 @@ Unsubscribing people:
 
 ```ruby
 # Unsubscribe an existing person
-Delighted::Unsubscribe.create(:person_email => "foo+testing1@delightedapp.com")
+Delighted::Unsubscribe.create(:person_email => "foo+testing1@delighted.com")
 ```
 
 ### Deleting pending survey requests
 
 ```ruby
 # Delete all pending (scheduled but unsent) survey requests for a person, by email.
-Delighted::SurveyRequest.delete_pending(:person_email => "foo+testing1@delightedapp.com")
+Delighted::SurveyRequest.delete_pending(:person_email => "foo+testing1@delighted.com")
 ```
 
 Adding survey responses:
 
 ```ruby
 # Add a survey response, score only
-survey_response1 = Delighted::SurveyResponse.create(:person => person1.id, :score => 10)
+survey_response1 = Delighted::SurveyResponse.create(:person => person1.id,
+  :score => 10)
 
 # Add *another* survey response (for the same person), score and comment
-survey_response2 = Delighted::SurveyResponse.create(:person => person1.id, :score => 5,
-  :comment => "Really nice.")
+survey_response2 = Delighted::SurveyResponse.create(:person => person1.id,
+  :score => 5, :comment => "Really nice.")
 ```
 
 Retrieving a survey response:
@@ -111,8 +115,9 @@ survey_responses_page_1_trend = Delighted::SurveyResponse.all(:trend => "123")
 survey_responses_page_1_desc = Delighted::SurveyResponse.all(:order => 'desc')
 
 # List all survey responses, 100 per page, page 5, with a time range
-filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5, :per_page => 100,
-  :since => Time.utc(2013, 10, 01), :until => Time.utc(2013, 11, 01))
+filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5,
+  :per_page => 100, :since => Time.utc(2013, 10, 01),
+  :until => Time.utc(2013, 11, 01))
 ```
 
 Retrieving metrics:
@@ -121,7 +126,8 @@ Retrieving metrics:
 # Get current metrics, 30-day simple moving average, from most recent response
 metrics = Delighted::Metrics.retrieve
 
-# Get current metrics, 30-day simple moving average, from most recent response, for a specific trend (ID: 123)
+# Get current metrics, 30-day simple moving average, from most recent response,
+# for a specific trend (ID: 123)
 metrics = Delighted::Metrics.retrieve(:trend => "123")
 
 # Get metrics, for given range
@@ -135,7 +141,7 @@ The following options are configurable for the client:
 
 ```ruby
 Delighted.api_key
-Delighted.api_base_url # default: 'https://api.delightedapp.com/v1'
+Delighted.api_base_url # default: 'https://api.delighted.com/v1'
 Delighted.http_adapter # default: Delighted::HTTPAdapter.new
 ```
 
@@ -144,12 +150,12 @@ By default, a shared instance of `Delighted::Client` is created lazily in `Delig
 ```ruby
 # Create an custom client instance, and pass as last argument to resource actions
 client = Delighted::Client.new(:api_key => 'API_KEY',
-  :api_base_url => 'https://api.delightedapp.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
+  :api_base_url => 'https://api.delighted.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
 metrics_from_custom_client = Delighted::Metrics.retrieve({}, client)
 
 # Or, you can set Delighted.shared_client yourself
 Delighted.shared_client = Delighted::Client.new(:api_key => 'API_KEY',
-  :api_base_url => 'https://api.delightedapp.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
+  :api_base_url => 'https://api.delighted.com/v1', :http_adapter => Delighted::HTTPAdapter.new)
 metrics_from_custom_shared_client = Delighted::Metrics.retrieve
 ```
 
