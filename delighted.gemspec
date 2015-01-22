@@ -6,9 +6,9 @@ Gem::Specification.new do |spec|
   spec.name          = "delighted"
   spec.version       = Delighted::VERSION
   spec.authors       = ["Mark Dodwell"]
-  spec.email         = ["mark@madeofcode.com"]
-  spec.description   = "Delighted API client for Ruby."
-  spec.summary       = "Delighted is the easiest and most beautiful way to measure customer happiness. Are your customers delighted?"
+  spec.email         = ["mark@delighted.com"]
+  spec.description   = "Delighted API Ruby Client."
+  spec.summary       = "Delighted is the fastest and easiest way to gather actionable feedback from your customers."
   spec.homepage      = "https://github.com/delighted/delighted-ruby"
   spec.license       = "MIT"
 
