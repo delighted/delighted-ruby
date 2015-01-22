@@ -25,25 +25,25 @@ Adding/updating people and scheduling surveys:
 
 ```ruby
 # Add a new person, and schedule a survey immediately
-person1 = Delighted::Person.create(:email => "foo+testing1@delighted.com")
+person1 = Delighted::Person.create(:email => "foo+test1@delighted.com")
 
 # Add a new person, and schedule a survey after 1 minute (60 seconds)
-person2 = Delighted::Person.create(:email => "foo+testing2@delighted.com",
+person2 = Delighted::Person.create(:email => "foo+test2@delighted.com",
   :delay => 60)
 
 # Add a new person, but do not schedule a survey
-person3 = Delighted::Person.create(:email => "foo+testing3@delighted.com",
+person3 = Delighted::Person.create(:email => "foo+test3@delighted.com",
   :send => false)
 
 # Add a new person with full set of attributes, including a custom question
 # product name, and schedule a survey with a 30 second delay
-person4 = Delighted::Person.create(:email => "foo+testing4@delighted.com",
+person4 = Delighted::Person.create(:email => "foo+test4@delighted.com",
   :name => "Joe Bloggs", :properties => { :customer_id => 123, :country => "USA",
   :question_product_name => "Apple Genius Bar" }, :delay => 30)
 
 # Update an existing person (identified by email), adding a name, without
 # scheduling a survey
-updated_person1 = Delighted::Person.create(:email => "foo+testing1@delighted.com",
+updated_person1 = Delighted::Person.create(:email => "foo+test1@delighted.com",
   :name => "James Scott", :send => false)
 ```
 
@@ -51,14 +51,14 @@ Unsubscribing people:
 
 ```ruby
 # Unsubscribe an existing person
-Delighted::Unsubscribe.create(:person_email => "foo+testing1@delighted.com")
+Delighted::Unsubscribe.create(:person_email => "foo+test1@delighted.com")
 ```
 
 ### Deleting pending survey requests
 
 ```ruby
 # Delete all pending (scheduled but unsent) survey requests for a person, by email.
-Delighted::SurveyRequest.delete_pending(:person_email => "foo+testing1@delighted.com")
+Delighted::SurveyRequest.delete_pending(:person_email => "foo+test1@delighted.com")
 ```
 
 Adding survey responses:
@@ -101,18 +101,18 @@ Listing survey responses:
 
 ```ruby
 # List all survey responses, 20 per page, first 2 pages
-survey_responses_page_1 = Delighted::SurveyResponse.all
-survey_responses_page_2 = Delighted::SurveyResponse.all(:page => 2)
+survey_responses_page1 = Delighted::SurveyResponse.all
+survey_responses_page2 = Delighted::SurveyResponse.all(:page => 2)
 
 # List all survey responses, 20 per page, expanding person object
-survey_responses_page_1_expanded = Delighted::SurveyResponse.all(:expand => ['person'])
-survey_responses_page_1_expanded[0].person #=> #<Delighted::Person:...>
+survey_responses_page1_expanded = Delighted::SurveyResponse.all(:expand => ['person'])
+survey_responses_page1_expanded[0].person #=> #<Delighted::Person:...>
 
 # List all survey responses, 20 per page, for a specific trend (ID: 123)
-survey_responses_page_1_trend = Delighted::SurveyResponse.all(:trend => "123")
+survey_responses_page1_trend = Delighted::SurveyResponse.all(:trend => "123")
 
 # List all survey responses, 20 per page, in reverse chronological order (newest first)
-survey_responses_page_1_desc = Delighted::SurveyResponse.all(:order => 'desc')
+survey_responses_page1_desc = Delighted::SurveyResponse.all(:order => 'desc')
 
 # List all survey responses, 100 per page, page 5, with a time range
 filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5,
@@ -135,7 +135,7 @@ metrics = Delighted::Metrics.retrieve(:since => Time.utc(2013, 10, 01),
   :until => Time.utc(2013, 11, 01))
 ```
 
-## <a name="advanced-configuration"></a> Advanced configuration & testing
+## <a name="advanced-configuration"></a> Advanced configuration & test
 
 The following options are configurable for the client:
 
@@ -145,7 +145,7 @@ Delighted.api_base_url # default: 'https://api.delighted.com/v1'
 Delighted.http_adapter # default: Delighted::HTTPAdapter.new
 ```
 
-By default, a shared instance of `Delighted::Client` is created lazily in `Delighted.shared_client`. If you want to create your own client, perhaps for testing or if you have multiple API keys, you can:
+By default, a shared instance of `Delighted::Client` is created lazily in `Delighted.shared_client`. If you want to create your own client, perhaps for test or if you have multiple API keys, you can:
 
 ```ruby
 # Create an custom client instance, and pass as last argument to resource actions
