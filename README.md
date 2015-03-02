@@ -39,7 +39,7 @@ person3 = Delighted::Person.create(:email => "foo+test3@delighted.com",
 # product name, and schedule a survey with a 30 second delay
 person4 = Delighted::Person.create(:email => "foo+test4@delighted.com",
   :name => "Joe Bloggs", :properties => { :customer_id => 123, :country => "USA",
-  :question_product_name => "Apple Genius Bar" }, :delay => 30)
+  :question_product_name => "The London Trench" }, :delay => 30)
 
 # Update an existing person (identified by email), adding a name, without
 # scheduling a survey
