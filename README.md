@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/delighted/delighted-ruby.svg)](https://travis-ci.org/delighted/delighted-ruby)
+[![Build Status](https://img.shields.io/travis/delighted/delighted-ruby.svg)](https://travis-ci.org/delighted/delighted-ruby)
 
 # Delighted API Ruby Client
 
