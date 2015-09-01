@@ -175,7 +175,7 @@ class Delighted::UnsubscribesTest < Delighted::TestCase
   def test_listing_unsubscribes
     uri = URI.parse("https://api.delightedapp.com/v1/unsubscribes")
     headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
-    example_unsub = {person_id: '4945', email: 'foo@example.com', name: nil, unsubscribed_at: 1440621400}
+    example_unsub = {:person_id => '4945', :email => 'foo@example.com', :name => nil, :unsubscribed_at => 1440621400}
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_unsub]))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
@@ -193,7 +193,7 @@ class Delighted::BouncesTest < Delighted::TestCase
   def test_listing_bounces
     uri = URI.parse("https://api.delightedapp.com/v1/bounces")
     headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
-    example_bounce = {person_id: '4945', email: 'foo@example.com', name: nil, bounced_at: 1440621400}
+    example_bounce = {:person_id => '4945', :email => 'foo@example.com', :name => nil, :bounced_at => 1440621400}
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_bounce]))
     mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
 
