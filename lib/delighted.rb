@@ -16,6 +16,7 @@ require 'delighted/operations/create'
 require 'delighted/operations/retrieve'
 require 'delighted/operations/update'
 
+require 'delighted/resources/bounce'
 require 'delighted/resources/metrics'
 require 'delighted/resources/person'
 require 'delighted/resources/survey_request'

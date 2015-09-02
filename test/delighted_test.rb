@@ -170,3 +170,39 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
     assert_equal({ :email => 'foo@bar.com' }, survey_responses[1].person.to_hash)
   end
 end
+
+class Delighted::UnsubscribesTest < Delighted::TestCase
+  def test_listing_unsubscribes
+    uri = URI.parse("https://api.delightedapp.com/v1/unsubscribes")
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
+    example_unsub = {:person_id => '4945', :email => 'foo@example.com', :name => nil, :unsubscribed_at => 1440621400}
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_unsub]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    unsubscribes = Delighted::Unsubscribe.all
+    assert_equal 1, unsubscribes.size
+    first_unsub = unsubscribes.first
+    assert_kind_of Delighted::Unsubscribe, first_unsub
+    assert_equal '4945', first_unsub.person_id
+    assert_equal example_unsub, first_unsub.to_hash
+  end
+end
+
+
+class Delighted::BouncesTest < Delighted::TestCase
+  def test_listing_bounces
+    uri = URI.parse("https://api.delightedapp.com/v1/bounces")
+    headers = { 'Authorization' => "Basic #{["123abc:"].pack('m0')}", "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
+    example_bounce = {:person_id => '4945', :email => 'foo@example.com', :name => nil, :bounced_at => 1440621400}
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_bounce]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    bounces = Delighted::Bounce.all
+    assert_equal 1, bounces.size
+    first_bounce = bounces.first
+    assert_kind_of Delighted::Bounce, first_bounce
+    assert_equal '4945', first_bounce.person_id
+    assert_equal example_bounce, first_bounce.to_hash
+  end
+end
+
