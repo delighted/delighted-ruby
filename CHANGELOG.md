@@ -1,3 +1,9 @@
+## 1.3.1 (Unreleased)
+
+Features:
+
+- Fix authentication header on REE-1.8.7-2011.03
+
 ## 1.3.0 (2014-06-03)
 
 Features:
