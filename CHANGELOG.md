@@ -1,3 +1,9 @@
+## 1.3.1 (Unreleased)
+
+Features:
+
+- Fix authentication header on 1.8.7
+
 ## 1.3.0 (2014-06-03)
 
 Features:
