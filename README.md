@@ -56,6 +56,22 @@ Unsubscribing people:
 Delighted::Unsubscribe.create(:person_email => "foo+test1@delighted.com")
 ```
 
+Listing people who have unsubscribed:
+
+```ruby
+# List all people who have unsubscribed, 20 per page, first 2 pages
+survey_responses_page1 = Delighted::Unsubscribe.all
+survey_responses_page2 = Delighted::Unsubscribe.all(:page => 2)
+```
+
+Listing people whose emails have bounced:
+
+```ruby
+# List all people whose emails have bounced, 20 per page, first 2 pages
+survey_responses_page1 = Delighted::Bounce.all
+survey_responses_page2 = Delighted::Bounce.all(:page => 2)
+```
+
 Deleting pending survey requests
 
 ```ruby
@@ -174,6 +190,7 @@ metrics_from_custom_shared_client = Delighted::Metrics.retrieve
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+3. Run the tests (`rake test`)
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request
