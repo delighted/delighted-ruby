@@ -1,6 +1,6 @@
 ## 1.5.0 (2015-09-29)
 
-Features
+Features:
 
 - Add support for listing People who have unsubscribed
 - Add support for listing People whose emails bounced
