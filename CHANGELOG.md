@@ -1,3 +1,9 @@
+## 1.5.1 (2015-10-06)
+
+Fixes:
+
+- Fixed tests that were failing in Ruby 1.8.7 (no changes to library code itself)
+
 ## 1.5.0 (2015-09-29)
 
 Features:
