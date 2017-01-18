@@ -166,7 +166,7 @@ Delighted.http_adapter # default: Delighted::HTTPAdapter.new
 By default, a shared instance of `Delighted::Client` is created lazily in `Delighted.shared_client`. If you want to create your own client, perhaps for test or if you have multiple API keys, you can:
 
 ```ruby
-# Create an custom client instance, and pass as last argument to resource actions
+# Create a custom client instance, and pass as last argument to resource actions
 client = Delighted::Client.new(:api_key => 'API_KEY',
   :api_base_url => 'https://api.delighted.com/v1',
   :http_adapter => Delighted::HTTPAdapter.new)
