@@ -1,3 +1,5 @@
+require 'date'
+
 module Delighted
   module Utils
     def self.eigenclass(object)
