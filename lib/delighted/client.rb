@@ -61,6 +61,8 @@ module Delighted
         raise UnsupportedFormatRequestedError, response
       when 422
         raise ResourceValidationError, response
+      when 429
+        raise RateLimitedError, response
       when 503
         raise ServiceUnavailableError, response
       else

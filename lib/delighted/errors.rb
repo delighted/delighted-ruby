@@ -21,6 +21,10 @@ module Delighted
     # 422, validation errors
   end
 
+  class RateLimitedError < Error
+    # 429, rate limited
+  end
+
   class GeneralAPIError < Error
     # 500, general/unknown error
   end

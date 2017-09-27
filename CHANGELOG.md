@@ -1,3 +1,9 @@
+## 1.6.0 (2017-09-27)
+
+Features:
+
+- Add support for rate limited responses (`Delighted::RateLimitedError`)
+
 ## 1.5.1 (2015-10-06)
 
 Fixes:
