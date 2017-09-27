@@ -194,3 +194,12 @@ metrics_from_custom_shared_client = Delighted::Metrics.retrieve
 4. Commit your changes (`git commit -am 'Add some feature'`)
 5. Push to the branch (`git push origin my-new-feature`)
 6. Create new Pull Request
+
+## Releasing
+
+1. Bump the version in `lib/delighted/version.rb`.
+2. Update the README and CHANGELOG as needed.
+3. Tag the commit for release.
+4. Build the gem with `gem build delighted.gemspec`.
+5. Install locally to verify `gem install PATH_TO_GENERATED_GEM.gem`.
+6. Push to Rubygems.org with `gem push PATH_TO_GENERATED_GEM.gem`.
