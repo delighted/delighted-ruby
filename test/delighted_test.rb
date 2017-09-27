@@ -7,7 +7,7 @@ class Delighted::ClientTest < Delighted::TestCase
   end
 
   def test_handles_rate_limited_response
-    response = Delighted::HTTPResponse.new(429, {}, Delighted::JSON.dump({ status: 429, message: "Too Many Requests" }
+    response = Delighted::HTTPResponse.new(429, {}, Delighted::JSON.dump({ :status => 429, :message => "Too Many Requests" }
 ))
     mock_http_adapter.stubs(:request).returns(response)
 
