@@ -9,12 +9,32 @@ module Delighted
     end
 
     def content_type
-      @headers.values_at('content-type', 'Content-Type')[0]
+      get_header_value("content-type")
     end
 
     def retry_after
-      if value = @headers["Retry-After"]
+      if value = get_header_value("retry-after")
         value.to_i
+      end
+    end
+
+    private
+
+    # Get value from header. Takes care of:
+    #
+    # - Unwrapping multiple values.
+    # - Handling casing difference in header name.
+    def get_header_value(key)
+      _key, value = @headers.detect { |k, _v| k.to_s.downcase == key.to_s.downcase }
+
+      if value
+        values = Utils.wrap_array(value)
+
+        if values.size == 1
+          values[0]
+        else
+          values
+        end
       end
     end
   end
