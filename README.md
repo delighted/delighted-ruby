@@ -153,6 +153,20 @@ metrics = Delighted::Metrics.retrieve(:since => Time.utc(2013, 10, 01),
   :until => Time.utc(2013, 11, 01))
 ```
 
+## Rate limits
+
+If a request is rate limited, a `Delighted::RateLimitedError` exception is raised. You can rescue that exception to implement exponential backoff or retry strategies. The exception provides a `#retry_after` method to tell you how many seconds you should wait before retrying. For example:
+
+```ruby
+begin
+  metrics = Delighted::Metrics.retrieve
+rescue Delighted::RateLimitedError => e
+  retry_after_seconds = e.retry_after
+  # wait for retry_after_seconds before retrying
+  # add your retry strategy here ...
+end
+```
+
 ## <a name="advanced-configuration"></a> Advanced configuration & testing
 
 The following options are configurable for the client:
