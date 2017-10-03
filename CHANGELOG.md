@@ -1,3 +1,10 @@
+## 1.7.0.rc1 (2017-10-03)
+
+Features:
+
+- Add `Delighted::RateLimitedError#retry_after`.
+- Add `Delighted::Error#response`.
+
 ## 1.6.0 (2017-09-27)
 
 Features:

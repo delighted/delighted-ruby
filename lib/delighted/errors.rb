@@ -1,5 +1,7 @@
 module Delighted
   class Error < StandardError
+    attr_reader :response
+
     def initialize(response)
       @response = response
     end
@@ -23,6 +25,10 @@ module Delighted
 
   class RateLimitedError < Error
     # 429, rate limited
+
+    def retry_after
+      response.retry_after
+    end
   end
 
   class GeneralAPIError < Error

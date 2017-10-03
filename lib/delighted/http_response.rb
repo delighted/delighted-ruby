@@ -11,5 +11,11 @@ module Delighted
     def content_type
       @headers.values_at('content-type', 'Content-Type')[0]
     end
+
+    def retry_after
+      if value = @headers["Retry-After"]
+        value.to_i
+      end
+    end
   end
 end
