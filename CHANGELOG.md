@@ -54,6 +54,6 @@ Features:
 
 Features:
 
-- Add support for cancelling pending survey requests
+- Add support for canceling pending survey requests
 
 ## 1.0.0 (2013-12-13)
