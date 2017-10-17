@@ -197,7 +197,6 @@ metrics_from_custom_shared_client = Delighted::Metrics.retrieve
 
 - Ruby MRI (1.8.7+)
 - JRuby (1.8 + 1.9 modes)
-- RBX (2.1.1)
 - REE (1.8.7-2012.02)
 
 ## Contributing
