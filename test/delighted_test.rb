@@ -86,7 +86,10 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
   def test_creating_a_survey_response
     uri = URI.parse("https://api.delightedapp.com/v1/survey_responses")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
-    data = Delighted::JSON.dump({ :person => '123', :score => 10 })
+    data = OrderedHash.new
+    data[:person] = '123'
+    data[:score] = 10
+    data = Delighted::JSON.dump(data)
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :id => '456', :person => '123', :score => 10 }))
     mock_http_adapter.expects(:request).with(:post, uri, headers, data).once.returns(response)
 
@@ -131,7 +134,10 @@ class Delighted::SurveyResponseTest < Delighted::TestCase
   def test_updating_a_survey_response
     uri = URI.parse("https://api.delightedapp.com/v1/survey_responses/456")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
-    data = Delighted::JSON.dump({ :person => '123', :score => 10 })
+    data = OrderedHash.new
+    data[:person] = '123'
+    data[:score] = 10
+    data = Delighted::JSON.dump(data)
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :id => '456', :person => '123', :score => 10 }))
     mock_http_adapter.expects(:request).with(:put, uri, headers, data).once.returns(response)
 

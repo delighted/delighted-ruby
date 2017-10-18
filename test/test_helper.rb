@@ -1,6 +1,7 @@
 require 'delighted'
 require 'minitest/autorun'
 require 'mocha/setup'
+require 'support/ordered_hash'
 
 class Delighted::TestCase < Minitest::Test
   include Mocha
