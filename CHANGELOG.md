@@ -1,4 +1,4 @@
-## 1.7.0.rc2 (2017-10-03)
+## 1.7.0 (Prerelease)
 
 Features:
 
