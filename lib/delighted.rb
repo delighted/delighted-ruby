@@ -15,6 +15,7 @@ require 'delighted/operations/all'
 require 'delighted/operations/create'
 require 'delighted/operations/retrieve'
 require 'delighted/operations/update'
+require 'delighted/operations/delete'
 
 require 'delighted/resources/bounce'
 require 'delighted/resources/metrics'

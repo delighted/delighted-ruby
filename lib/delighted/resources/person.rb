@@ -3,5 +3,6 @@ module Delighted
     self.path = "/people"
 
     include Operations::Create
+    include Operations::Delete
   end
 end
