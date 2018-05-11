@@ -1,3 +1,9 @@
+## 1.8.0 (2018-05-10)
+
+Features:
+
+- Add `Delighted::Person.delete`
+
 ## 1.7.0 (2017-10-18)
 
 Features:
