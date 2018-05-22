@@ -12,17 +12,17 @@ module Delighted
         !!@singleton_resource
       end
 
-      def identifier_string(id_hash)
-        raise ArgumentError, "must pass Hash" unless Hash === id_hash
-        raise ArgumentError, "must pass exactly one identifier name and value" unless id_hash.size == 1
+      def identifier_string(identifier_hash)
+        raise ArgumentError, "must pass Hash" unless Hash === identifier_hash
+        raise ArgumentError, "must pass exactly one identifier name and value" unless identifier_hash.size == 1
 
-        id_key = id_hash.keys.first
-        id_value = id_hash.values.first
+        identifier_key = identifier_hash.keys.first
+        identifier_value = identifier_hash.values.first
 
-        if id_key.to_s == "id"
-          id_value.to_s
+        if identifier_key.to_s == "id"
+          identifier_value.to_s
         else
-          "#{id_key}:#{id_value}"
+          "#{identifier_key}:#{identifier_value}"
         end
       end
     end
