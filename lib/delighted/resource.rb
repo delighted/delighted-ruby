@@ -16,8 +16,8 @@ module Delighted
         raise ArgumentError, "must pass Hash" unless Hash === id_hash
         raise ArgumentError, "must pass exactly one identifier name and value" unless id_hash.size == 1
 
-        id_key = id_hash.keys.detect { |k| !id_hash[k].to_s.empty? }
-        id_value = id_hash[id_key]
+        id_key = id_hash.keys.first
+        id_value = id_hash.values.first
 
         if id_key.to_s == "id"
           id_value.to_s
