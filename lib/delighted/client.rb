@@ -45,7 +45,7 @@ module Delighted
       uri = URI.parse(File.join(@api_base_url, path))
       data = JSON.dump(params) unless params.empty?
 
-      response = @http_adapter.request(:delete, uri, headers, data)
+      response = @http_adapter.request(:delete, uri.to_s, headers, data)
       handle_json_response(response)
     end
 

@@ -74,7 +74,7 @@ class Delighted::PeopleTest < Delighted::TestCase
     uri = URI.parse("https://api.delightedapp.com/v1/people/foo%40bar.com/survey_requests/pending")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :ok => true }))
-    mock_http_adapter.expects(:request).with(:delete, uri, headers, nil).once.returns(response)
+    mock_http_adapter.expects(:request).with(:delete, uri.to_s, headers, nil).once.returns(response)
 
     result = Delighted::SurveyRequest.delete_pending(:person_email => "foo@bar.com")
     assert_kind_of Hash, result
@@ -85,7 +85,7 @@ class Delighted::PeopleTest < Delighted::TestCase
     uri = URI.parse("https://api.delightedapp.com/v1/people/57")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(202, {}, Delighted::JSON.dump({ :ok => true }))
-    mock_http_adapter.expects(:request).with(:delete, uri, headers, nil).once.returns(response)
+    mock_http_adapter.expects(:request).with(:delete, uri.to_s, headers, nil).once.returns(response)
 
     result = Delighted::Person.delete(:id => 57)
     assert_kind_of Hash, result
@@ -96,7 +96,7 @@ class Delighted::PeopleTest < Delighted::TestCase
     uri = URI.parse("https://api.delightedapp.com/v1/people/email:foo@bar.com")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(202, {}, Delighted::JSON.dump({ :ok => true }))
-    mock_http_adapter.expects(:request).with(:delete, uri, headers, nil).once.returns(response)
+    mock_http_adapter.expects(:request).with(:delete, uri.to_s, headers, nil).once.returns(response)
 
     result = Delighted::Person.delete(:email => "foo@bar.com")
     assert_kind_of Hash, result
@@ -104,7 +104,7 @@ class Delighted::PeopleTest < Delighted::TestCase
   end
 
   def test_deleting_a_person_by_phone_number
-    uri = URI.parse("https://api.delightedapp.com/v1/people/phone_number:+14155551212")
+    uri = URI.parse("https://api.delightedapp.com/v1/people/phone_number%3A%2B14155551212")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(202, {}, Delighted::JSON.dump({ :ok => true }))
     mock_http_adapter.expects(:request).with(:delete, uri, headers, nil).once.returns(response)
