@@ -94,7 +94,6 @@ class Delighted::PeopleTest < Delighted::TestCase
 
   def test_deleting_a_person_by_email
     uri = URI.parse("https://api.delightedapp.com/v1/people/email%3Afoo%40bar.com")
-    puts uri.to_s
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
     response = Delighted::HTTPResponse.new(202, {}, Delighted::JSON.dump({ :ok => true }))
     mock_http_adapter.expects(:request).with(:delete, uri.to_s, headers, nil).once.returns(response)
