@@ -11,6 +11,20 @@ module Delighted
       def singleton_resource?
         !!@singleton_resource
       end
+
+      def identifier_string(identifier_hash)
+        raise ArgumentError, "must pass Hash" unless Hash === identifier_hash
+        raise ArgumentError, "must pass exactly one identifier name and value" unless identifier_hash.size == 1
+
+        identifier_key = identifier_hash.keys.first
+        identifier_value = identifier_hash.values.first
+
+        if identifier_key.to_s == "id"
+          identifier_value.to_s
+        else
+          "#{identifier_key}:#{identifier_value}"
+        end
+      end
     end
 
     undef :id if method_defined?(:id)

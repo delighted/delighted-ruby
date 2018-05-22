@@ -1,3 +1,9 @@
+## Unreleased
+
+Features:
+
+- Add `Delighted::Person.delete`
+
 ## 1.7.0 (2017-10-18)
 
 Features:

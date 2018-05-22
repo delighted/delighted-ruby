@@ -72,6 +72,17 @@ survey_responses_page1 = Delighted::Bounce.all
 survey_responses_page2 = Delighted::Bounce.all(:page => 2)
 ```
 
+Deleting a person and all of the data associated with them:
+
+```ruby
+# Delete by person id
+Delighted::Person.delete(:id => 42)
+# Delete by email address
+Delighted::Person.delete(:email => "test@example.com")
+# Delete by phone number (must be E.164 format)
+Delighted::Person.delete(:phone_number => "+14155551212")
+```
+
 Deleting pending survey requests
 
 ```ruby
