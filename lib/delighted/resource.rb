@@ -20,7 +20,7 @@ module Delighted
         id_value = id_hash[id_key]
 
         if id_key.to_s == "id"
-          id_value
+          id_value.to_s
         else
           "#{id_key}:#{id_value}"
         end
