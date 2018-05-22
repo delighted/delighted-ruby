@@ -1,4 +1,4 @@
-## 1.8.0 (Unreleased)
+## Unreleased
 
 Features:
 
