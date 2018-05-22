@@ -1,4 +1,4 @@
-## Unreleased
+## 1.8.0rc1 (2018-05-22)
 
 Features:
 
