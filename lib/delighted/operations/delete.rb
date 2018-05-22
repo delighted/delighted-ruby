@@ -7,7 +7,7 @@ module Delighted
 
       module ClassMethods
         def path(id = nil)
-          id ? "#{@path}/#{id}" : @path
+          id ? "#{@path}/#{CGI.escape(id)}" : @path
         end
 
         def delete(id_hash, client = Delighted.shared_client)
