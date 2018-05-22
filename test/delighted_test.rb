@@ -81,6 +81,10 @@ class Delighted::PeopleTest < Delighted::TestCase
     assert_equal({ :ok => true }, result)
   end
 
+  def test_deleting_a_person_with_multiple_identifiers
+    assert_raises(ArgumentError) { Delighted::Person.delete(:id => 57, :email => "foo@example.com") }
+  end
+
   def test_deleting_a_person_by_id
     uri = URI.parse("https://api.delightedapp.com/v1/people/57")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
