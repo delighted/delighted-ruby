@@ -79,7 +79,7 @@ Deleting a person and all of the data associated with them:
 Delighted::Person.delete(:id => 42)
 # Delete by email address
 Delighted::Person.delete(:email => "test@example.com")
-# Delete by phone number
+# Delete by phone number (must be E.164 format)
 Delighted::Person.delete(:phone_number => "+14155551212")
 ```
 
