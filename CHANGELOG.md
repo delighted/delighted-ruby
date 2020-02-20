@@ -1,3 +1,9 @@
+## Unreleased
+
+Features:
+
+- Add `Delighted::Person.list`
+
 ## 1.8.0 (2018-05-22)
 
 Features:

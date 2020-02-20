@@ -2,6 +2,7 @@ module Delighted
   class Client
     DEFAULT_API_BASE_URL = "https://api.delightedapp.com/v1"
     DEFAULT_HTTP_ADAPTER = HTTPAdapter.new
+    DEFAULT_ACCEPT_HEADER = "application/json"
 
     def initialize(opts = {})
       @api_key = opts[:api_key] or raise ArgumentError, "You must provide an API key by setting Delighted.api_key = '123abc' or passing { :api_key => '123abc' } when instantiating Delighted::Client.new"
@@ -10,13 +11,18 @@ module Delighted
     end
 
     def get_json(path, params = {})
-      headers = default_headers.dup.merge('Accept' => 'application/json')
+      request_get(path, params: params)[:json]
+    end
 
-      uri = URI.parse(File.join(@api_base_url, path))
+    def request_get(path, params: {}, accept_header: DEFAULT_ACCEPT_HEADER, full_url: false)
+      headers = default_headers.dup.merge('Accept' => accept_header)
+
+      path = File.join(@api_base_url, path) if !full_url
+      uri = URI.parse(path)
       uri.query = Utils.to_query(params) unless params.empty?
 
       response = @http_adapter.request(:get, uri, headers)
-      handle_json_response(response)
+      {json: handle_json_response(response), response: response}
     end
 
     def post_json(path, params = {})
