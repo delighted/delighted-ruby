@@ -62,7 +62,7 @@ end
 # If you do not want auto pagination to handle rate limits with sleep,
 # you will need need to handle the exception manually, e.g.:
 begin
-  people.auto_paging_each(auto_handle_rate_limits: false) do |person|
+  people.auto_paging_each({ auto_handle_rate_limits: false }) do |person|
     # Do something with person
   end
 rescue Delighted::RateLimitError => e

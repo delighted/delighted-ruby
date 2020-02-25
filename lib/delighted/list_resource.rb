@@ -8,14 +8,15 @@ module Delighted
       @iteration_count = 0
     end
 
-    def auto_paging_each(auto_handle_rate_limits: true)
+    def auto_paging_each(opts = {})
+      auto_handle_rate_limits = opts.fetch(:auto_handle_rate_limits, true)
       loop do
         begin
           # Get next (or first) page
           if @iteration_count == 0
-            data = @client.request_get(@path, params: @opts)
+            data = @client.request_get(@path, { params: @opts })
           else
-            data = @client.request_get(@next_link, full_url: true)
+            data = @client.request_get(@next_link, { full_url: true })
           end
         rescue Delighted::RateLimitedError => e
           if auto_handle_rate_limits
@@ -30,7 +31,7 @@ module Delighted
         @next_link = data[:response].next_link
 
         data[:json].map do |attributes|
-          yield Object.const_get(@class).new(attributes)
+          yield Utils.full_const_get(@class).new(attributes)
         end
 
         break if @next_link.nil?

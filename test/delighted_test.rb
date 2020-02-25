@@ -40,7 +40,7 @@ end
 class Delighted::PeopleTest < Delighted::TestCase
   def test_listing_people_auto_paginate
     uri = URI.parse("https://api.delightedapp.com/v1/people")
-    uri_next = URI.parse("http://api.delightedapp.com/v1/people.json?page_info=123456789")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/people.json?page_info=123456789")
     headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
 
     # First request mock
@@ -77,7 +77,7 @@ class Delighted::PeopleTest < Delighted::TestCase
 
   def test_listing_people_rate_limited
     uri = URI.parse("https://api.delightedapp.com/v1/people")
-    uri_next = URI.parse("http://api.delightedapp.com/v1/people.json?page_info=123456789")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/people.json?page_info=123456789")
     headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
 
     # First request mock
@@ -91,7 +91,7 @@ class Delighted::PeopleTest < Delighted::TestCase
 
     persons_all = []
     exception = assert_raises Delighted::RateLimitedError do
-      Delighted::Person.list.auto_paging_each(auto_handle_rate_limits: false) do |p|
+      Delighted::Person.list.auto_paging_each({ :auto_handle_rate_limits => false }) do |p|
         persons_all << p
       end
     end
@@ -107,7 +107,7 @@ class Delighted::PeopleTest < Delighted::TestCase
 
   def test_listing_people_auto_handle_rate_limits
     uri = URI.parse("https://api.delightedapp.com/v1/people")
-    uri_next = URI.parse("http://api.delightedapp.com/v1/people.json?page_info=123456789")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/people.json?page_info=123456789")
     headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
 
     # First request mock
@@ -124,7 +124,7 @@ class Delighted::PeopleTest < Delighted::TestCase
     persons_all = []
     people = Delighted::Person.list
     people.expects(:sleep).with(3)
-    people.auto_paging_each(auto_handle_rate_limits: true) do |p|
+    people.auto_paging_each({ :auto_handle_rate_limits => true }) do |p|
       persons_all << p
     end
 

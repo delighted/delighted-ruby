@@ -11,10 +11,14 @@ module Delighted
     end
 
     def get_json(path, params = {})
-      request_get(path, params: params)[:json]
+      request_get(path, {:params => params})[:json]
     end
 
-    def request_get(path, params: {}, accept_header: DEFAULT_ACCEPT_HEADER, full_url: false)
+    def request_get(path, opts = {})
+      accept_header = opts.fetch(:accept_header, DEFAULT_ACCEPT_HEADER)
+      params = opts.fetch(:params, {})
+      full_url = opts.fetch(:full_url, false)
+
       headers = default_headers.dup.merge('Accept' => accept_header)
 
       path = File.join(@api_base_url, path) if !full_url
