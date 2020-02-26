@@ -11,22 +11,21 @@ module Delighted
     end
 
     def get_json(path, params = {})
-      request_get(path, {:params => params})[:json]
+      request_get(path, {params: params})[:json]
     end
 
     def request_get(path, opts = {})
       accept_header = opts.fetch(:accept_header, DEFAULT_ACCEPT_HEADER)
       params = opts.fetch(:params, {})
-      full_url = opts.fetch(:full_url, false)
 
       headers = default_headers.dup.merge('Accept' => accept_header)
 
-      path = File.join(@api_base_url, path) if !full_url
+      path = File.join(@api_base_url, path) unless is_full_url(path)
       uri = URI.parse(path)
       uri.query = Utils.to_query(params) unless params.empty?
 
       response = @http_adapter.request(:get, uri, headers)
-      {json: handle_json_response(response), response: response}
+      { json: handle_json_response(response), response: response }
     end
 
     def post_json(path, params = {})
@@ -85,6 +84,10 @@ module Delighted
         'Authorization' => "Basic #{["#{@api_key}:"].pack('m').chomp}",
         'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}"
       }.freeze
+    end
+
+    def is_full_url(url)
+      !!(URI::regexp(%w(http https)) =~ url)
     end
   end
 end

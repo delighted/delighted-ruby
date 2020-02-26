@@ -96,7 +96,7 @@ class Delighted::PeopleTest < Delighted::TestCase
       end
     end
 
-    assert_equal "10", exception.response.headers['Retry-After']
+    assert_equal 10, exception.retry_after
 
     assert_equal 1, persons_all.size
     first_person = persons_all[0]
@@ -137,6 +137,28 @@ class Delighted::PeopleTest < Delighted::TestCase
     assert_kind_of Delighted::Person, next_person
     assert_equal "Silver", next_person.name
     assert_equal example_person_next, next_person.to_hash
+  end
+
+  def test_listing_people_auto_paginate_second_call
+    uri = URI.parse("https://api.delightedapp.com/v1/people")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+
+    # First request mock
+    example_person1 = {:person_id => "4945", :email => "foo@example.com", :name => "Gold"}
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_person1]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    persons_all = []
+    people = Delighted::Person.list
+    people.auto_paging_each do |p|
+      persons_all << p
+    end
+
+    assert_equal 1, persons_all.size
+
+    assert_raises Delighted::PaginationError do
+      people.auto_paging_each
+    end
   end
 
   def test_creating_or_updating_a_person

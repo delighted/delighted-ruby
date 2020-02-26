@@ -7,7 +7,7 @@ module Delighted
 
       module ClassMethods
         def list(opts = {}, client = Delighted.shared_client)
-          ListResource.new(self.name, path, Utils.serialize_values(opts), client)
+          ListResource.new(self, path, Utils.serialize_values(opts), client)
         end
       end
     end

@@ -6,21 +6,24 @@ module Delighted
       @opts = opts
       @client = client
       @iteration_count = 0
+      @done = false
     end
 
     def auto_paging_each(opts = {})
-      auto_handle_rate_limits = opts.fetch(:auto_handle_rate_limits, true)
+      raise PaginationError, "pagination completed" if @done
+
+      auto_handle_rate_limits = opts.fetch(:auto_handle_rate_limits, false)
       loop do
         begin
           # Get next (or first) page
           if @iteration_count == 0
             data = @client.request_get(@path, { params: @opts })
           else
-            data = @client.request_get(@next_link, { full_url: true })
+            data = @client.request_get(@next_link)
           end
         rescue Delighted::RateLimitedError => e
           if auto_handle_rate_limits
-            sleep e.response.headers['Retry-After'].to_i
+            sleep e.retry_after
             retry
           else
             raise
@@ -31,11 +34,12 @@ module Delighted
         @next_link = data[:response].next_link
 
         data[:json].map do |attributes|
-          yield Utils.full_const_get(@class).new(attributes)
+          yield @class.new(attributes)
         end
 
         break if @next_link.nil?
       end
+      @done = true
     end
   end
 end

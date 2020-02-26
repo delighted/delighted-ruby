@@ -38,4 +38,8 @@ module Delighted
   class ServiceUnavailableError < Error
     # 503, maintenance or overloaded
   end
+
+  class PaginationError < StandardError
+    # e.g. pagination completed
+  end
 end

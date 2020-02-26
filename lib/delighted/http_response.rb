@@ -45,13 +45,18 @@ module Delighted
 
     def parse_link_header(header_value)
       links = {}
+      parts = Array(header_value)
+                .map { |v| v.split(",") }
+                .flatten
+                .map(&:strip)
       # Parse each part into a named link
-      header_value.split(',').each do |part, index|
+      parts.each do |part|
         section = part.split(';')
+        next if section.length < 2
         url = section[0][/<(.*)>/,1]
-        name = section[1][/rel="(.*)"/,1].to_sym
+        name = section[1][/rel="?([^"]*)"?/,1].to_sym
         links[name] = url
-      end if !header_value.nil? && !header_value.empty?
+      end
       links
     end
   end

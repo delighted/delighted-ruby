@@ -67,16 +67,6 @@ module Delighted
         [object]
       end
     end
-
-    def self.full_const_get(name)
-      list = name.split("::")
-      list.shift if list.first.nil? || list.first.empty?
-      obj = Object
-      list.each do |x|
-        obj = obj.const_defined?(x) ? obj.const_get(x) : obj.const_missing(x)
-      end
-      obj
-    end
   end
 end
 

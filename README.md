@@ -53,21 +53,21 @@ Listing all people:
 
 ```ruby
 # List all people, auto pagination
-# Note: this may use sleep to retry with back off when needed
+# Note: Make sure to handle the possible rate limits error
 people = Delighted::Person.list
-people.auto_paging_each do |person|
-  # Do something with person
-end
-
-# If you do not want auto pagination to handle rate limits with sleep,
-# you will need need to handle the exception manually, e.g.:
 begin
-  people.auto_paging_each({ auto_handle_rate_limits: false }) do |person|
+  people.auto_paging_each do |person|
     # Do something with person
   end
 rescue Delighted::RateLimitError => e
-  sleep e.response.headers["Retry-After"].to_i
+  # Indicates how long to wait before making this request again
+  e.retry_after
   retry
+end
+
+# For convenience, this method can use a sleep to automatically handle rate limits
+people.auto_paging_each({ auto_handle_rate_limits: true }) do |person|
+  # Do something with person
 end
 ```
 
