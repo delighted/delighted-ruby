@@ -1,3 +1,14 @@
+## 2.0.0rc1 (Unreleased)
+
+Features:
+
+- Add `Delighted::Person.list`
+
+Compatibility changes:
+
+- Add support for Ruby 2.7
+- Drop support for Ruby 1.8.7, 1.9.2, and ree
+
 ## 1.8.0 (2018-05-22)
 
 Features:

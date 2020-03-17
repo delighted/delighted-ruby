@@ -1,3 +1,3 @@
 module Delighted
-  VERSION = "1.8.0"
+  VERSION = "2.0.0rc1"
 end

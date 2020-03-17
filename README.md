@@ -49,6 +49,28 @@ updated_person1 = Delighted::Person.create(:email => "foo+test1@delighted.com",
   :name => "James Scott", :send => false)
 ```
 
+Listing all people:
+
+```ruby
+# List all people, auto pagination
+# Note: Make sure to handle the possible rate limits error
+people = Delighted::Person.list
+begin
+  people.auto_paging_each do |person|
+    # Do something with person
+  end
+rescue Delighted::RateLimitError => e
+  # Indicates how long to wait before making this request again
+  e.retry_after
+  retry
+end
+
+# For convenience, this method can use a sleep to automatically handle rate limits
+people.auto_paging_each({ auto_handle_rate_limits: true }) do |person|
+  # Do something with person
+end
+```
+
 Unsubscribing people:
 
 ```ruby
@@ -56,7 +78,7 @@ Unsubscribing people:
 Delighted::Unsubscribe.create(:person_email => "foo+test1@delighted.com")
 ```
 
-Listing people who have unsubscribed:
+Listing people who have unsubscribed (auto pagination not supported):
 
 ```ruby
 # List all people who have unsubscribed, 20 per page, first 2 pages
@@ -64,7 +86,7 @@ survey_responses_page1 = Delighted::Unsubscribe.all
 survey_responses_page2 = Delighted::Unsubscribe.all(:page => 2)
 ```
 
-Listing people whose emails have bounced:
+Listing people whose emails have bounced (auto pagination not supported):
 
 ```ruby
 # List all people whose emails have bounced, 20 per page, first 2 pages

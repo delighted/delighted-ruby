@@ -12,6 +12,11 @@ module Delighted
       get_header_value("content-type")
     end
 
+    def next_link
+      link_header = get_header_value("link")
+      parse_link_header(link_header)[:next]
+    end
+
     def retry_after
       if value = get_header_value("retry-after")
         value.to_i
@@ -36,6 +41,23 @@ module Delighted
           values
         end
       end
+    end
+
+    def parse_link_header(header_value)
+      links = {}
+      parts = Array(header_value)
+                .map { |v| v.split(",") }
+                .flatten
+                .map(&:strip)
+      # Parse each part into a named link
+      parts.each do |part|
+        section = part.split(';')
+        next if section.length < 2
+        url = section[0][/<(.*)>/,1]
+        name = section[1][/rel="?([^"]*)"?/,1].to_sym
+        links[name] = url
+      end
+      links
     end
   end
 end

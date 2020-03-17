@@ -4,5 +4,6 @@ module Delighted
 
     include Operations::Create
     include Operations::Delete
+    include Operations::List
   end
 end

@@ -38,6 +38,129 @@ class Delighted::MetricsTest < Delighted::TestCase
 end
 
 class Delighted::PeopleTest < Delighted::TestCase
+  def test_listing_people_auto_paginate
+    uri = URI.parse("https://api.delightedapp.com/v1/people")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/people.json?page_info=123456789")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+
+    # First request mock
+    example_person1 = {:person_id => "4945", :email => "foo@example.com", :name => "Gold"}
+    example_person2 = {:person_id => "4946", :email => "foo+2@example.com", :name => "Silver"}
+    response = Delighted::HTTPResponse.new(200, {"Link" => "<#{uri_next}>; rel=\"next\""}, Delighted::JSON.dump([example_person1,example_person2]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    # Next request mock
+    example_person_next = {:person_id => "4947", :email => "foo+3@example.com", :name => "Bronze"}
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_person_next]))
+    mock_http_adapter.expects(:request).with(:get, uri_next, headers).once.returns(response)
+
+    persons_all = []
+    Delighted::Person.list.auto_paging_each do |p|
+      persons_all << p
+    end
+
+    assert_equal 3, persons_all.size
+
+    first_person = persons_all[0]
+    assert_kind_of Delighted::Person, first_person
+    assert_equal "Gold", first_person.name
+    assert_equal example_person1, first_person.to_hash
+    second_person = persons_all[1]
+    assert_kind_of Delighted::Person, second_person
+    assert_equal "Silver", second_person.name
+    assert_equal example_person2, second_person.to_hash
+    third_person = persons_all[2]
+    assert_kind_of Delighted::Person, third_person
+    assert_equal "Bronze", third_person.name
+    assert_equal example_person_next, third_person.to_hash
+  end
+
+  def test_listing_people_rate_limited
+    uri = URI.parse("https://api.delightedapp.com/v1/people")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/people.json?page_info=123456789")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+
+    # First request mock
+    example_person1 = {:person_id => "4945", :email => "foo@example.com", :name => "Gold"}
+    response = Delighted::HTTPResponse.new(200, {"Link" => "<#{uri_next}>; rel=\"next\""}, Delighted::JSON.dump([example_person1]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    # Next rate limited request mock
+    response = Delighted::HTTPResponse.new(429, { "Retry-After" => "10" }, {})
+    mock_http_adapter.expects(:request).with(:get, uri_next, headers).once.returns(response)
+
+    persons_all = []
+    exception = assert_raises Delighted::RateLimitedError do
+      Delighted::Person.list.auto_paging_each({ :auto_handle_rate_limits => false }) do |p|
+        persons_all << p
+      end
+    end
+
+    assert_equal 10, exception.retry_after
+
+    assert_equal 1, persons_all.size
+    first_person = persons_all[0]
+    assert_kind_of Delighted::Person, first_person
+    assert_equal "Gold", first_person.name
+    assert_equal example_person1, first_person.to_hash
+  end
+
+  def test_listing_people_auto_handle_rate_limits
+    uri = URI.parse("https://api.delightedapp.com/v1/people")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/people.json?page_info=123456789")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+
+    # First request mock
+    example_person1 = {:person_id => "4945", :email => "foo@example.com", :name => "Gold"}
+    response = Delighted::HTTPResponse.new(200, {"Link" => "<#{uri_next}>; rel=\"next\""}, Delighted::JSON.dump([example_person1]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    # Next rate limited request mock, then accepted request
+    response_rate_limited = Delighted::HTTPResponse.new(429, { "Retry-After" => "3" }, {})
+    example_person_next = {:person_id => "4947", :email => "foo+next@example.com", :name => "Silver"}
+    response_ok = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_person_next]))
+    mock_http_adapter.expects(:request).with(:get, uri_next, headers).twice.returns(response_rate_limited, response_ok)
+
+    persons_all = []
+    people = Delighted::Person.list
+    people.expects(:sleep).with(3)
+    people.auto_paging_each({ :auto_handle_rate_limits => true }) do |p|
+      persons_all << p
+    end
+
+    assert_equal 2, persons_all.size
+    first_person = persons_all[0]
+    assert_kind_of Delighted::Person, first_person
+    assert_equal "Gold", first_person.name
+    assert_equal example_person1, first_person.to_hash
+    next_person = persons_all[1]
+    assert_kind_of Delighted::Person, next_person
+    assert_equal "Silver", next_person.name
+    assert_equal example_person_next, next_person.to_hash
+  end
+
+  def test_listing_people_auto_paginate_second_call
+    uri = URI.parse("https://api.delightedapp.com/v1/people")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+
+    # First request mock
+    example_person1 = {:person_id => "4945", :email => "foo@example.com", :name => "Gold"}
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([example_person1]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    persons_all = []
+    people = Delighted::Person.list
+    people.auto_paging_each do |p|
+      persons_all << p
+    end
+
+    assert_equal 1, persons_all.size
+
+    assert_raises Delighted::PaginationError do
+      people.auto_paging_each
+    end
+  end
+
   def test_creating_or_updating_a_person
     uri = URI.parse("https://api.delightedapp.com/v1/people")
     headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
