@@ -1,3 +1,16 @@
+## 2.1.0rc1 (unreleased)
+
+Features:
+
+- Add `Delighted::AutopilotConfiguration.retrieve`
+- Add `Delighted::AutopilotMembership.list`
+- Add `Delighted::AutopilotMembership.create`
+- Add `Delighted::AutopilotMembership.delete`
+
+Compatibility changes:
+
+- Replace deprecated `URI::regexp` with `URI::DEFAULT_PARSER.make_regexp`
+
 ## 2.0.0 (2020-03-18)
 
 Features:
