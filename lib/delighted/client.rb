@@ -87,7 +87,7 @@ module Delighted
     end
 
     def is_full_url(url)
-      !!(URI::regexp(%w(http https)) =~ url)
+      !!(URI::DEFAULT_PARSER.make_regexp(%w(http https)) =~ url)
     end
   end
 end
