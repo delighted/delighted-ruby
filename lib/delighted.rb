@@ -26,6 +26,9 @@ require 'delighted/resources/survey_request'
 require 'delighted/resources/survey_response'
 require 'delighted/resources/unsubscribe'
 
+require 'delighted/resources/autopilot_configuration'
+require 'delighted/resources/autopilot_membership'
+
 require 'delighted/errors'
 require 'delighted/http_response'
 require 'delighted/http_adapter'
