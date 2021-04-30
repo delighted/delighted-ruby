@@ -209,6 +209,42 @@ Delighted::AutopilotMembership::Email
 end
 ```
 
+Add a person to Autopilot:
+
+```ruby
+props = {
+  "Shoe Type" => "Sneaker",
+  "Handedness" => "Left"
+}
+result = Delighted::AutopilotMembership::Email.create(
+  person_email: "foo+test1@delighted.com", 
+  properties: props
+)
+```
+
+Update a person in Autopilot:
+
+```ruby
+props = {
+  "Shoe Type" => "Sandal",
+  "Handedness" => "Left"
+}
+result = Delighted::AutopilotMembership::Email.create(
+  person_email: "foo+test1@delighted.com", 
+  properties: props
+)
+```
+
+Remove a person from Autopilot:
+
+```ruby
+result = Delighted::AutopilotMembership::Sms.delete(
+  person_phone_number: "+15555551212"
+)
+
+result = Delighted::AutopilotMembership::Sms.delete(person_id: "433523")
+```
+
 Retrieving metrics:
 
 ```ruby
