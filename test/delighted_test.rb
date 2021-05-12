@@ -387,3 +387,211 @@ class Delighted::BouncesTest < Delighted::TestCase
   end
 end
 
+class Delighted::AutopilotConfigurationsTest < Delighted::TestCase
+  def test_getting_sms_autopilot_configuration
+    uri = URI.parse("https://api.delightedapp.com/v1/autopilot/sms")
+    headers = { 'Authorization' => @auth_header, "Accept" => "application/json", 'User-Agent' => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ :platform_id => 'sms', :active => true, :frequency => 7776000, :created_at => 1611253998, :updated_at => 1618421598 }))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    configuration = Delighted::AutopilotConfiguration.retrieve('sms')
+    assert_kind_of Delighted::AutopilotConfiguration, configuration
+    assert_equal({ :platform_id => 'sms', :active => true, :frequency => 7776000, :created_at => 1611253998, :updated_at => 1618421598 }, configuration.to_hash)
+    assert_equal 'sms', configuration.platform_id
+    assert_equal true, configuration.active
+    assert_equal 7776000, configuration.frequency
+    assert_equal 1611253998, configuration.created_at
+    assert_equal 1618421598, configuration.updated_at
+  end
+end
+
+class Delighted::AutopilotMembershipsTest < Delighted::TestCase
+  def test_listing_autopilot_memberships
+    first_membership = {
+      :created_at => 1611253998,
+      :updated_at => 1618421598,
+      :person => {
+        :id => "34",
+        :name => "Leslie",
+        :email => "leslie@example.com",
+        :created_at => 1611365037,
+        :phone_number => "+1555555112",
+        :last_sent_at => nil
+      },
+      :next_survey_request => {
+        :id => "42",
+        :created_at => 1614043237,
+        :survey_scheduled_at => 1620087437,
+        :properties => { :"Purchase Experience" => "Web", :"State" => "OR" }
+      }
+    }
+    second_membership = {
+      :created_at => 1611243998,
+      :updated_at => 1618420598,
+      :person => {
+        :id => "42",
+        :name => "Taylor",
+        :email => "taylor@example.com",
+        :created_at => 1611242998,
+        :phone_number => "+1555551212",
+        :last_sent_at => 1611242998
+      },
+      :next_survey_request => {
+        :id => "3445",
+        :created_at => 1614043437,
+        :survey_scheduled_at => 1620087837,
+        :properties => { :"Purchase Experience" => "Mobile", :"State" => "CA" }
+      }
+    }
+    third_membership = {
+      :created_at => 1611143998,
+      :updated_at => 1618320598,
+      :person => {
+        :id => "47",
+        :name => "Casey",
+        :email => "casey@example.com",
+        :created_at => 1610242998,
+        :phone_number => "+1555551234",
+        :last_sent_at => 1610242998
+      },
+      :next_survey_request => {
+        :id => "3449",
+        :created_at => 1614063437,
+        :survey_scheduled_at => 1620097837,
+        :properties => { :"Purchase Experience" => "Store", :"State" => "WA" }
+      }
+    }
+    uri = URI.parse("https://api.delightedapp.com/v1/autopilot/sms/memberships")
+    uri_next = URI.parse("https://api.delightedapp.com/v1/autopilot/sms/memberships?page_info=123456789")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+
+    # First request mock
+    response = Delighted::HTTPResponse.new(200, {"Link" => "<#{uri_next}>; rel=\"next\""}, Delighted::JSON.dump([first_membership, second_membership]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    # Next request mock
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([third_membership]))
+    mock_http_adapter.expects(:request).with(:get, uri_next, headers).once.returns(response)
+
+    memberships = []
+    Delighted::AutopilotMembership::Sms.list.auto_paging_each do |membership|
+      memberships << membership
+    end
+
+    assert_equal 3, memberships.size
+    assert_kind_of Delighted::AutopilotMembership::Sms, memberships[0]
+    assert_kind_of Delighted::Person, memberships[0].person
+    assert_kind_of Delighted::SurveyRequest, memberships[0].next_survey_request
+    assert_equal 1611253998, memberships[0].created_at
+    assert_equal "34", memberships[0].person.id
+    assert_nil memberships[0].person.last_sent_at
+    assert_equal first_membership[:person].reject { |k,_| k == :id }, memberships[0].person.to_hash
+    assert_equal "+1555555112", memberships[0].person.phone_number
+    assert_equal 1620087437, memberships[0].next_survey_request.survey_scheduled_at
+    assert_equal first_membership[:next_survey_request][:properties], memberships[0].next_survey_request.properties
+    assert_kind_of Delighted::AutopilotMembership, memberships[1]
+    assert_equal 1611242998, memberships[1].person.last_sent_at
+  end
+
+  def test_listing_specific_autopilot_memberships
+    specific_membership = {
+      :created_at => 1611253998,
+      :updated_at => 1618421598,
+      :person => {
+        :id => "34",
+        :name => "Leslie",
+        :email => "leslie@example.com",
+        :created_at => 1611365037,
+        :phone_number => "+1555555112",
+        :last_sent_at => nil
+      },
+      :next_survey_request => {
+        :id => "42",
+        :created_at => 1614043237,
+        :survey_scheduled_at => 1620087437,
+        :properties => {
+          :"Purchase Experience" => "Web",
+          :"State" => "OR"
+        }
+      }
+    }
+    uri = URI.parse("https://api.delightedapp.com/v1/autopilot/sms/memberships?person_id=34")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump([specific_membership]))
+    mock_http_adapter.expects(:request).with(:get, uri, headers).once.returns(response)
+
+    memberships = []
+    Delighted::AutopilotMembership::Sms.list(person_id: 34).auto_paging_each do |membership|
+      memberships << membership
+    end
+
+    assert_equal 1, memberships.size
+    assert_kind_of Delighted::AutopilotMembership::Sms, memberships[0]
+    assert_kind_of Delighted::Person, memberships[0].person
+    assert_kind_of Delighted::SurveyRequest, memberships[0].next_survey_request
+    assert_equal 1, memberships.size
+  end
+
+  def test_adding_autopilot_membership
+    params = {
+      person_email: "leslie@example.com",
+      person_name: "Leslie",
+      properties: {
+        :"Purchase Experience" => "Web",
+        :"State" => "OR"
+      }
+    }
+    uri = URI.parse("https://api.delightedapp.com/v1/autopilot/email/memberships")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ person: { id: "333", name: params[:person_name], email: params[:person_email] }, properties: params[:properties] }))
+    mock_http_adapter.expects(:request).with(:post, uri, headers, Delighted::JSON.dump(params)).once.returns(response)
+
+    result = Delighted::AutopilotMembership::Email.create(params)
+
+    assert_kind_of Delighted::AutopilotMembership::Email, result
+    assert_kind_of Delighted::Person, result.person
+    assert_equal params[:properties], result.properties
+    assert_equal params[:person_email], result.person.email
+    assert_equal params[:person_name], result.person.name
+    assert result.person.id
+    assert_equal params[:properties], result.properties
+  end
+
+  def test_updating_autopilot_membership
+    params = {
+      person_id: "333",
+      properties: {
+        :"Purchase Experience" => "Web",
+        :"State" => "OR"
+      }
+    }
+    uri = URI.parse("https://api.delightedapp.com/v1/autopilot/sms/memberships")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ person: { id: "333", name: "Leslie", email: "leslie@example.com", phone_numer: "+15555551212" }, properties: params[:properties] }))
+    mock_http_adapter.expects(:request).with(:post, uri, headers, Delighted::JSON.dump(params)).once.returns(response)
+
+    result = Delighted::AutopilotMembership::Sms.create(params)
+
+    assert_kind_of Delighted::AutopilotMembership::Sms, result
+    assert_kind_of Delighted::Person, result.person
+    assert_equal params[:properties], result.properties
+    assert_equal "leslie@example.com", result.person.email
+    assert_equal "Leslie", result.person.name
+    assert_equal "333", result.person.id
+    assert_equal params[:properties], result.properties
+  end
+
+  def test_removing_autopilot_membership
+    uri = URI.parse("https://api.delightedapp.com/v1/autopilot/sms/memberships")
+    headers = { "Authorization" => @auth_header, "Accept" => "application/json", 'Content-Type' => 'application/json', "User-Agent" => "Delighted RubyGem #{Delighted::VERSION}" }
+    response = Delighted::HTTPResponse.new(200, {}, Delighted::JSON.dump({ person: { id: "333", name: "Leslie", email: "leslie@example.com"} }))
+    mock_http_adapter.expects(:request).with(:delete, uri, headers, Delighted::JSON.dump({person_id: "455"})).once.returns(response)
+
+    result = Delighted::AutopilotMembership::Sms.delete(:person_id => "455")
+
+    assert_kind_of Hash, result
+    assert_equal "leslie@example.com", result[:person].email
+    assert_equal "Leslie", result[:person].name
+    assert_equal "333", result[:person].id
+  end
+end

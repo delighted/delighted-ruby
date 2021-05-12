@@ -171,6 +171,80 @@ filtered_survey_responses = Delighted::SurveyResponse.all(:page => 5,
   :until => Time.utc(2013, 11, 01))
 ```
 
+Getting Autopilot state:
+
+```ruby
+email_autopilot_state = Delighted::AutopilotConfiguration.retrieve("email")
+sms_autopilot_state = Delighted::AutopilotConfiguration.retrieve("sms")
+```
+
+Listing Autopilot members:
+
+```ruby
+email_autopilot_members = Delighted::AutopilotMembership::Email.list
+begin
+  email_autopilot_members.auto_paging_each do |membership|
+    # Do something with membership
+  end
+rescue Delighted::RateLimitError => e
+  # Indicates how long to wait before making this request again
+  e.retry_after
+  retry
+end
+
+# For convenience, this method can use a sleep to automatically handle rate limits
+email_autopilot_members.auto_paging_each({ auto_handle_rate_limits: true }) do |membership|
+  # Do something with membership
+end
+```
+
+Look up specific Autopilot member:
+
+```ruby
+Delighted::AutopilotMembership::Email
+  .list(person_email: "foo+test1@delighted.com") # or person_id or person_phone_number
+  .auto_paging_each({ auto_handle_rate_limits: true }) do |membership|
+    # Do something with membership. If no membership for this person exists, 
+    # this block will never be called.
+end
+```
+
+Add a person to Autopilot:
+
+```ruby
+props = {
+  "Shoe Type" => "Sneaker",
+  "Handedness" => "Left"
+}
+result = Delighted::AutopilotMembership::Email.create(
+  person_email: "foo+test1@delighted.com", 
+  properties: props
+)
+```
+
+Update a person in Autopilot:
+
+```ruby
+props = {
+  "Shoe Type" => "Sandal",
+  "Handedness" => "Left"
+}
+result = Delighted::AutopilotMembership::Email.create(
+  person_email: "foo+test1@delighted.com", 
+  properties: props
+)
+```
+
+Remove a person from Autopilot:
+
+```ruby
+result = Delighted::AutopilotMembership::Sms.delete(
+  person_phone_number: "+15555551212"
+)
+
+result = Delighted::AutopilotMembership::Sms.delete(person_id: "433523")
+```
+
 Retrieving metrics:
 
 ```ruby
